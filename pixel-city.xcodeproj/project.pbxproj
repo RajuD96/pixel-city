@@ -54,14 +54,46 @@
 		E93F18CC2004A35300EC58A5 /* pixel-city */ = {
 			isa = PBXGroup;
 			children = (
+				E93F18E22004A3FA00EC58A5 /* Utilities */,
+				E93F18E12004A3EB00EC58A5 /* Extensions */,
+				E93F18E02004A3DF00EC58A5 /* View */,
+				E93F18DF2004A3D400EC58A5 /* Controller */,
 				E93F18CD2004A35300EC58A5 /* AppDelegate.swift */,
-				E93F18CF2004A35300EC58A5 /* ViewController.swift */,
 				E93F18D12004A35300EC58A5 /* Main.storyboard */,
 				E93F18D42004A35300EC58A5 /* Assets.xcassets */,
 				E93F18D62004A35300EC58A5 /* LaunchScreen.storyboard */,
 				E93F18D92004A35300EC58A5 /* Info.plist */,
 			);
 			path = "pixel-city";
+			sourceTree = "<group>";
+		};
+		E93F18DF2004A3D400EC58A5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E93F18CF2004A35300EC58A5 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E93F18E02004A3DF00EC58A5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E93F18E12004A3EB00EC58A5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E93F18E22004A3FA00EC58A5 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
