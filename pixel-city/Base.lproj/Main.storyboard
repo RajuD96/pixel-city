@@ -13,6 +13,9 @@
         <array key="Avenir.ttc">
             <string>Avenir-Medium</string>
         </array>
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-DemiBold</string>
+        </array>
     </customFonts>
     <scenes>
         <!--MapVC-->
@@ -91,7 +94,56 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-183.19999999999999" y="130.78817733990149"/>
+            <point key="canvasLocation" x="-596" y="145"/>
+        </scene>
+        <!--PopVC-->
+        <scene sceneID="XBl-Aa-p4c">
+            <objects>
+                <viewController storyboardIdentifier="PopVC" id="1b2-3n-Dfx" customClass="PopVC" customModule="pixel_city" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lks-va-rsh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pYO-rc-ETB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DwU-0e-afE">
+                                <rect key="frame" x="62" y="748" width="250" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double-Tap to dismiss" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anL-C3-FW0">
+                                        <rect key="frame" x="33.666666666666671" y="2.6666666666666288" width="183" height="24.666666666666668"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="WLr-ZO-mhS"/>
+                                    <constraint firstAttribute="height" constant="30" id="YFH-bs-F4u"/>
+                                    <constraint firstItem="anL-C3-FW0" firstAttribute="centerX" secondItem="DwU-0e-afE" secondAttribute="centerX" id="vMA-3h-5XL"/>
+                                    <constraint firstItem="anL-C3-FW0" firstAttribute="centerY" secondItem="DwU-0e-afE" secondAttribute="centerY" id="zEE-17-Hol"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DwU-0e-afE" firstAttribute="bottom" secondItem="kX8-TS-Ulp" secondAttribute="bottom" id="6KZ-f6-jL7"/>
+                            <constraint firstItem="pYO-rc-ETB" firstAttribute="leading" secondItem="kX8-TS-Ulp" secondAttribute="leading" id="BHE-cf-jbD"/>
+                            <constraint firstItem="pYO-rc-ETB" firstAttribute="top" secondItem="lks-va-rsh" secondAttribute="top" id="LC4-QX-29F"/>
+                            <constraint firstItem="DwU-0e-afE" firstAttribute="centerX" secondItem="lks-va-rsh" secondAttribute="centerX" id="Sqj-0f-Itd"/>
+                            <constraint firstAttribute="bottom" secondItem="pYO-rc-ETB" secondAttribute="bottom" id="laW-By-y0t"/>
+                            <constraint firstItem="pYO-rc-ETB" firstAttribute="trailing" secondItem="kX8-TS-Ulp" secondAttribute="trailing" id="tBN-pa-8FV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kX8-TS-Ulp"/>
+                    </view>
+                    <connections>
+                        <outlet property="popUpImageView" destination="pYO-rc-ETB" id="yqU-pi-dF5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zkr-GU-Ach" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="223.19999999999999" y="144.82758620689657"/>
         </scene>
     </scenes>
     <resources>
