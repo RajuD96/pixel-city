@@ -9,6 +9,8 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
+import AlamofireImage
 
 class MapVC: UIViewController,UIGestureRecognizerDelegate{
     
@@ -21,6 +23,8 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
     let authorizationStatus = CLLocationManager.authorizationStatus()
     var spinner:UIActivityIndicatorView?
     var progressLabel:UILabel?
+    var imageUrlsArry = [String]()
+    var imageArry = [UIImage]()
     var screenSize = UIScreen.main.bounds
     var collectionView:UICollectionView?
     var flowLayout = UICollectionViewFlowLayout()
@@ -38,7 +42,7 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        collectionView?.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         pullUpView.addSubview(collectionView!)
         addDoubleTap()
         addSwipe()
@@ -64,6 +68,7 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
     }
     
     @objc func animateViewDown() {
+        cancelAllSession()
         pullUpViewHeightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -127,6 +132,7 @@ extension MapVC: MKMapViewDelegate {
         removePin()
         removeSpinner()
         removeProgressLabel()
+        cancelAllSession()
     
         animateViewUp()
         addSwipe()
@@ -136,6 +142,17 @@ extension MapVC: MKMapViewDelegate {
         let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         let annotation = DroppablePin(coordinate: touchCoordinate, identifier: "droppablePin")
         mapView.addAnnotation(annotation)
+        
+        fetchUrls(forAnnotation: annotation) { (finished) in
+            if finished {
+                self.retrieveImages(handler: { (finished) in
+                    if finished {
+                        self.removeSpinner()
+                        self.removeProgressLabel()
+                    }
+                })
+            }
+        }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(touchCoordinate, regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
         
@@ -146,6 +163,45 @@ extension MapVC: MKMapViewDelegate {
             mapView.removeAnnotation(annotation)
         }
     }
+    
+    func fetchUrls(forAnnotation annotation:DroppablePin,handler: @escaping (_ status:Bool)-> ()) {
+        imageUrlsArry = []
+        
+        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, addNumberOfPhotos: 40)).responseJSON { (response) in
+            guard let json = response.result.value as? Dictionary<String, AnyObject> else {return}
+            let photos = json["photos"] as! Dictionary<String, AnyObject>
+            let photoArry = photos["photo"] as! [Dictionary<String, AnyObject>]
+            for photo in photoArry {
+                let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                self.imageUrlsArry.append(postUrl)
+            }
+            handler(true)
+        }
+    }
+    func retrieveImages(handler:@escaping (_ status:Bool)->()) {
+        imageArry = []
+        
+        for url in imageUrlsArry {
+            Alamofire.request(url).responseImage(completionHandler: { (response) in
+                guard let image = response.result.value else {return}
+                self.imageArry.append(image)
+                self.progressLabel?.text = "\(self.imageArry.count)/40 Images Downloading"
+                if self.imageArry.count == self.imageUrlsArry.count {
+                    handler(true)
+                }
+            })
+        }
+    }
+    
+    func cancelAllSession() {
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            sessionDataTask.forEach({ $0.cancel()})
+            downloadData.forEach({$0.cancel()})
+        }
+        
+        
+    }
+    
     
 }
 extension MapVC: CLLocationManagerDelegate{
