@@ -43,7 +43,6 @@
                                         <rect key="frame" x="28" y="18" width="318" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="OHp-ma-ZLd"/>
-                                            <constraint firstAttribute="width" constant="318" id="daA-m0-RhK"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -78,8 +77,10 @@
                             <constraint firstItem="3S1-Ho-kuF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="P0x-yt-Fir"/>
                             <constraint firstItem="3S1-Ho-kuF" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Pk4-Mu-Krw"/>
                             <constraint firstItem="P3W-Mt-Srt" firstAttribute="bottom" secondItem="3S1-Ho-kuF" secondAttribute="bottom" constant="-50" id="UE9-md-jCj"/>
-                            <constraint firstItem="w0T-Yh-ZY7" firstAttribute="top" secondItem="3S1-Ho-kuF" secondAttribute="bottom" id="VXz-Bq-Ni4"/>
+                            <constraint firstItem="w0T-Yh-ZY7" firstAttribute="top" secondItem="3S1-Ho-kuF" secondAttribute="bottom" id="UHF-NJ-TLw"/>
+                            <constraint firstItem="w0T-Yh-ZY7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="bottom" constant="-1" id="VXz-Bq-Ni4"/>
                             <constraint firstItem="3S1-Ho-kuF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="duO-91-3Ef"/>
+                            <constraint firstItem="w0T-Yh-ZY7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="bottom" constant="-1" id="grK-iW-ZQs"/>
                             <constraint firstAttribute="trailing" secondItem="w0T-Yh-ZY7" secondAttribute="trailing" id="hqf-wN-d40"/>
                             <constraint firstItem="w0T-Yh-ZY7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="lwh-qy-c8I"/>
                             <constraint firstItem="KMh-3a-UOb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="qmX-FN-zVw"/>
@@ -125,19 +126,30 @@
                                     <constraint firstItem="anL-C3-FW0" firstAttribute="centerY" secondItem="DwU-0e-afE" secondAttribute="centerY" id="zEE-17-Hol"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cmE-Nd-sox">
+                                <rect key="frame" x="0.0" y="44" width="375" height="27"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DwU-0e-afE" firstAttribute="bottom" secondItem="kX8-TS-Ulp" secondAttribute="bottom" id="6KZ-f6-jL7"/>
                             <constraint firstItem="pYO-rc-ETB" firstAttribute="leading" secondItem="kX8-TS-Ulp" secondAttribute="leading" id="BHE-cf-jbD"/>
                             <constraint firstItem="pYO-rc-ETB" firstAttribute="top" secondItem="lks-va-rsh" secondAttribute="top" id="LC4-QX-29F"/>
+                            <constraint firstItem="cmE-Nd-sox" firstAttribute="top" secondItem="kX8-TS-Ulp" secondAttribute="top" id="LmV-Jw-Wy3"/>
                             <constraint firstItem="DwU-0e-afE" firstAttribute="centerX" secondItem="lks-va-rsh" secondAttribute="centerX" id="Sqj-0f-Itd"/>
+                            <constraint firstItem="kX8-TS-Ulp" firstAttribute="trailing" secondItem="cmE-Nd-sox" secondAttribute="trailing" id="Ton-OE-WeK"/>
+                            <constraint firstItem="cmE-Nd-sox" firstAttribute="leading" secondItem="kX8-TS-Ulp" secondAttribute="leading" id="ahZ-mv-8Pt"/>
+                            <constraint firstItem="cmE-Nd-sox" firstAttribute="centerX" secondItem="lks-va-rsh" secondAttribute="centerX" id="cn8-9y-xGa"/>
                             <constraint firstAttribute="bottom" secondItem="pYO-rc-ETB" secondAttribute="bottom" id="laW-By-y0t"/>
                             <constraint firstItem="pYO-rc-ETB" firstAttribute="trailing" secondItem="kX8-TS-Ulp" secondAttribute="trailing" id="tBN-pa-8FV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="kX8-TS-Ulp"/>
                     </view>
                     <connections>
+                        <outlet property="imageTitle" destination="cmE-Nd-sox" id="Fux-F8-U8t"/>
                         <outlet property="popUpImageView" destination="pYO-rc-ETB" id="yqU-pi-dF5"/>
                     </connections>
                 </viewController>

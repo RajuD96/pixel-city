@@ -9,7 +9,6 @@
 import UIKit
 import MapKit
 
-
 class DroppablePin:NSObject,MKAnnotation {
     dynamic var coordinate:CLLocationCoordinate2D
     var identifier: String
@@ -19,5 +18,4 @@ class DroppablePin:NSObject,MKAnnotation {
         self.identifier = identifier
         super.init()
     }
-    
 }

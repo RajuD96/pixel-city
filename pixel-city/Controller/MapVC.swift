@@ -14,30 +14,37 @@ import AlamofireImage
 
 class MapVC: UIViewController,UIGestureRecognizerDelegate{
     
-    
+    //Outlets
     @IBOutlet weak var pullUpViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var pullUpView: UIView!
     @IBOutlet weak var mapView: MKMapView!
+    //Variable
     var locationManager = CLLocationManager()
     let regionRadius:Double = 1000
+    
     let authorizationStatus = CLLocationManager.authorizationStatus()
     var spinner:UIActivityIndicatorView?
+    
     var progressLabel:UILabel?
     var imageUrlsArry = [String]()
+    
     var imageArry = [UIImage]()
     var screenSize = UIScreen.main.bounds
+    
     var collectionView:UICollectionView?
     var flowLayout = UICollectionViewFlowLayout()
+    
+    var imageNameTitle = [String]()
+    var imageOwner = [String]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       mapView.delegate = self
+        mapView.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.mapView.showsUserLocation = true
         configureLocationService()
-        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
         collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
         collectionView?.delegate = self
@@ -48,8 +55,7 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         addDoubleTap()
         addSwipe()
     }
-    
-        func addDoubleTap() {
+    func addDoubleTap() {
         let doubleTap = UITapGestureRecognizer(target: self, action:#selector(dropPin(sender:)))
         doubleTap.numberOfTapsRequired = 2
         doubleTap.delegate = self
@@ -61,11 +67,11 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         swipe.direction = .down
         pullUpView.addGestureRecognizer(swipe)
     }
-        func animateViewUp(){
+    func animateViewUp(){
         pullUpViewHeightConstraint.constant = 300
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc func animateViewDown() {
@@ -74,7 +80,6 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        
     }
     
     func addSpinner() {
@@ -84,8 +89,6 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         spinner?.startAnimating()
         collectionView?.addSubview(spinner!)
-        
-        
     }
     func removeSpinner(){
         if spinner != nil {
@@ -106,7 +109,7 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         progressLabel?.textAlignment = .center
         collectionView?.addSubview(progressLabel!)
     }
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             return nil
         }
@@ -115,7 +118,7 @@ class MapVC: UIViewController,UIGestureRecognizerDelegate{
         pinAnnotation.animatesDrop = true
         return pinAnnotation
     }
-
+    
     @IBAction func centerMapBtnPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
@@ -137,7 +140,7 @@ extension MapVC: MKMapViewDelegate {
         imageUrlsArry = []
         imageArry = []
         collectionView?.reloadData()
-    
+        
         animateViewUp()
         addSwipe()
         addSpinner()
@@ -160,7 +163,6 @@ extension MapVC: MKMapViewDelegate {
         }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(touchCoordinate, regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
-        
     }
     
     func removePin() {
@@ -170,23 +172,27 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func fetchUrls(forAnnotation annotation:DroppablePin,handler: @escaping (_ status:Bool)-> ()) {
-       
         
+        //Alamofire Request
         Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, addNumberOfPhotos: 40)).responseJSON { (response) in
+            //JSON Parsing
             guard let json = response.result.value as? Dictionary<String, AnyObject> else {return}
             let photos = json["photos"] as! Dictionary<String, AnyObject>
             let photoArry = photos["photo"] as! [Dictionary<String, AnyObject>]
             for photo in photoArry {
                 let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                let imageName = photo["title"] as! String
+                let imageOwner = photo["owner"] as! String
+                self.imageOwner.append(imageOwner)
+                self.imageNameTitle.append(imageName)
                 self.imageUrlsArry.append(postUrl)
             }
             handler(true)
         }
     }
     func retrieveImages(handler:@escaping (_ status:Bool)->()) {
-    
-        
         for url in imageUrlsArry {
+            //AlamofireImage response
             Alamofire.request(url).responseImage(completionHandler: { (response) in
                 guard let image = response.result.value else {return}
                 self.imageArry.append(image)
@@ -203,11 +209,7 @@ extension MapVC: MKMapViewDelegate {
             sessionDataTask.forEach({ $0.cancel()})
             downloadData.forEach({$0.cancel()})
         }
-        
-        
     }
-    
-    
 }
 extension MapVC: CLLocationManagerDelegate{
     func configureLocationService() {
@@ -220,7 +222,6 @@ extension MapVC: CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         centerMapOnUserLocation()
     }
-    
 }
 extension MapVC: UICollectionViewDelegate,UICollectionViewDataSource {
     
@@ -239,8 +240,8 @@ extension MapVC: UICollectionViewDelegate,UICollectionViewDataSource {
         return imageArry.count
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       guard  let popVC = storyboard?.instantiateViewController(withIdentifier: "PopVC") as? PopVC else {return}
-        popVC.initData(forImage: imageArry[indexPath.row])
+        guard  let popVC = storyboard?.instantiateViewController(withIdentifier: "PopVC") as? PopVC else {return}
+        popVC.initData(image: imageArry[indexPath.row], title: imageNameTitle[indexPath.row])
         present(popVC, animated: true, completion:nil)
     }
 }
@@ -249,9 +250,8 @@ extension MapVC:UIViewControllerPreviewingDelegate {
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = collectionView?.indexPathForItem(at: location), let cell = collectionView?.cellForItem(at: indexPath) else {return nil}
-        
         guard let popVc = storyboard?.instantiateViewController(withIdentifier: "PopVC") as? PopVC else {return nil}
-        popVc.initData(forImage: imageArry[indexPath.row])
+        popVc.initData(image: imageArry[indexPath.row], title: imageNameTitle[indexPath.row])
         previewingContext.sourceRect = cell.contentView.frame
         return popVc
     }
@@ -261,7 +261,3 @@ extension MapVC:UIViewControllerPreviewingDelegate {
     }
     
 }
-
-
-
-
