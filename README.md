@@ -1,5 +1,8 @@
 # pixel-city
 
+### Description
+It is a simple app using Mapkit to fetch 40 pictures where the pin is drop using flicker api and have 3D touch feature.
+
 ### API used
 Flicker API
 
